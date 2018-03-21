@@ -1,0 +1,8 @@
+﻿{
+	"css": [
+	  "~/App_Plugins/MediaExporter/css/style.css"
+	],
+    "javascript":  [
+	  "~/App_Plugins/MediaExporter/js/"
+    ]
+}
