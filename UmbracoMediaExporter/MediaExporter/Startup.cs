@@ -25,6 +25,8 @@ namespace MediaExporter
                     Icon = "zip",
                     SeperatorBefore = true
                 };
+                menuItem.LaunchDialogView("/App_Plugins/MediaExporter/Backoffice/Dialogs/dialog.html",
+                    "Media Exporter");
                 e.Menu.Items.Insert(e.Menu.Items.Count - 1, menuItem);
             }
         }

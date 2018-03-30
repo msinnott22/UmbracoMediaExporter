@@ -2,7 +2,8 @@
 	"css": [
 	  "~/App_Plugins/MediaExporter/css/style.css"
 	],
-    "javascript":  [
-	  "~/App_Plugins/MediaExporter/js/"
-    ]
+  "javascript": [
+    "~/App_Plugins/MediaExporter/backOffice/controllers/mediaexporter.dialog.controller.js",
+    "~/App_Plugins/MediaExporter/backOffice/resources/mediaexporter.resource.js"
+  ]
 }
