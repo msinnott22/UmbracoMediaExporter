@@ -20,6 +20,17 @@
                         $scope.error = false;
                         $scope.success = true;
                         $scope.busy = false;
+
+                        console.log(resp);
+
+                        var file = new Blob([resp], { type: 'application/zip' });
+                        var fileURL = URL.createObjectURL(file);
+                        var downloadLink = angular.element('<a></a>');
+                        downloadLink.attr('href', fileURL);
+                        downloadLink.attr('download', 'Media');
+                        downloadLink.attr('target', '_self');
+                        downloadLink[0].click();
+                        url.revokeObjectURL(fileURL);
                     },
                     function(err) {
                         $scope.success = false;

@@ -5,7 +5,7 @@
     return {
 
         exportMedia: function(nodeId) {
-            return $http.post(apiRoot + "ExportMedia/?nodeId=" + nodeId);
+            return $http.post(apiRoot + "ExportMedia/?nodeId=" + nodeId, null, { responseType: 'arraybuffer' });
         }
     };
 }

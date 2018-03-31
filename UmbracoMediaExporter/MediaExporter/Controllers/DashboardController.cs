@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 using System.Web.Http;
+using Ionic.Zip;
 using Newtonsoft.Json;
-using umbraco.cms.businesslogic.Files;
-using Umbraco.Core;
-using Umbraco.Core.IO;
-using Umbraco.Core.Models;
 using Umbraco.Web;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
@@ -17,7 +17,7 @@ namespace MediaExporter.Controllers
     public class DashboardController : UmbracoAuthorizedApiController
     {
         [HttpPost]
-        public void ExportMedia(int nodeId)
+        public HttpResponseMessage ExportMedia(int nodeId)
         {
             var helper = new UmbracoHelper(UmbracoContext.Current);
             var mediaFolder = helper.TypedMedia(nodeId);
@@ -31,15 +31,31 @@ namespace MediaExporter.Controllers
                 var file = JsonConvert.DeserializeObject<UmbFile>(umbracoFileProp.Value.ToString());
                 if (file != null)
                 {
-                    mediaFilesToZip.Add(file.src);
+                    var filePath = HttpContext.Current.Server.MapPath(file.src);
+                    mediaFilesToZip.Add(filePath);
                 }
             }
 
-            var count = mediaFilesToZip.Count;
-            //TODO: ZIP code needs to go here. Going to use SharpZipLib as it comes with Umbraco.
-            //TODO: FastZip() method seems the way. 
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.AddFiles(mediaFilesToZip, false, "");
+                return ZipContentResult(zip);
+            }
         }
+
+        private HttpResponseMessage ZipContentResult(ZipFile zipFile)
+        {
+            var pushStreamContent = new PushStreamContent(((stream, content, context) =>
+            {
+                zipFile.Save(stream);
+                stream.Close();
+            }), "application/zip");
+
+            return new HttpResponseMessage(HttpStatusCode.OK) {Content = pushStreamContent};
+        }
+
     }
+
 
     public class UmbFile
     {
