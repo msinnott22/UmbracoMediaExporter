@@ -237,6 +237,7 @@
   <ItemGroup>
     <Content Include="App_Plugins\MediaExporter\backOffice\Dialogs\dialog.html" />
     <Content Include="App_Plugins\MediaExporter\backOffice\controllers\mediaexporter.dialog.controller.js" />
+    <Content Include="App_Plugins\MediaExporter\backOffice\node_modules\angular-file-saver\dist\angular-file-saver.bundle.js" />
     <Content Include="App_Plugins\MediaExporter\backOffice\resources\mediaexporter.resource.js" />
     <Content Include="App_Plugins\MediaExporter\package.manifest" />
     <None Include="packages.config" />

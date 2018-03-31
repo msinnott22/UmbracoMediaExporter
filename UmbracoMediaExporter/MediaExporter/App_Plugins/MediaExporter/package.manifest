@@ -4,6 +4,7 @@
 	],
   "javascript": [
     "~/App_Plugins/MediaExporter/backOffice/controllers/mediaexporter.dialog.controller.js",
-    "~/App_Plugins/MediaExporter/backOffice/resources/mediaexporter.resource.js"
+    "~/App_Plugins/MediaExporter/backOffice/resources/mediaexporter.resource.js",
+    "~/App_Plugins/MediaExporter/backOffice/node_modules/angular-file-saver/dist/angular-file-saver.bundle.js"
   ]
 }

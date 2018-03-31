@@ -1,5 +1,7 @@
-﻿angular.module("umbraco").controller("MediaExporter.Dialog.Controller",
-    function($scope, mediaExporterResource) {
+﻿app.requires.push('ngFileSaver');
+
+angular.module("umbraco").controller("MediaExporter.Dialog.Controller",
+    function($scope, mediaExporterResource, FileSaver, Blob) {
 
         var dialogOptions = $scope.dialogOptions;
         var node = dialogOptions.currentNode;
@@ -23,19 +25,17 @@
 
                         console.log(resp);
 
-                        var file = new Blob([resp], { type: 'application/zip' });
-                        var fileURL = URL.createObjectURL(file);
-                        var downloadLink = angular.element('<a></a>');
-                        downloadLink.attr('href', fileURL);
-                        downloadLink.attr('download', 'Media');
-                        downloadLink.attr('target', '_self');
-                        downloadLink[0].click();
-                        url.revokeObjectURL(fileURL);
+                        openSaveAsDialog("data", resp.data, 'application/zip');
                     },
                     function(err) {
                         $scope.success = false;
                         $scope.error = err;
                         $scope.busy = false;
                     });
+        };
+
+        function openSaveAsDialog(filename, content, mediaType) {
+            var blob = new Blob([content], { type: mediaType });
+            FileSaver.saveAs(blob, filename);
         };
     });
