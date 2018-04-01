@@ -2,10 +2,7 @@
   "name": "MediaExporter",
   "readme": "",
   "url": "",
-  "license": {
-    "name": "MIT",
-    "url": ""
-  },
+  "license": "MIT",
   "author": {
     "name": "Michael Sinnott",
     "url": "http://www.michaelsinnott.co.uk"
