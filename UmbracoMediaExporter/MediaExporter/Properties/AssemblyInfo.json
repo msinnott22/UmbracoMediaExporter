@@ -1,0 +1,10 @@
+{
+    "title": "MediaExporter",
+    "description": "Media Exporter allows you to export media folders from Umbraco",
+    "company": "Michael Sinnott",
+    "product": "MediaExporter",
+    "copyright": "Copyright ©  2018",
+    "version": "1.0.0.0",
+    "informationalVersion": "1.0.0.0",
+    "fileVersion": "1.0.0.0"
+}

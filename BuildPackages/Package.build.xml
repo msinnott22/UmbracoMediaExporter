@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
+
+    <!-- PROPERTIES -->
+    <!-- SHARED PROPERTIES -->
+    <PropertyGroup>
+        <PackageName>Media Exporter</PackageName>
+        <MinUmbracoVersion>7.9.2</MinUmbracoVersion>
+        <Readme>Export Media Folders</Readme>
+        <AuthorName>Michael Sinnott</AuthorName>
+        <AuthorUrl>http://www.michaelsinnott.co.uk<AuthorUrl>
+        <PackageLicenseName>MIT License</PackageLicenseName>
+        <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
+        <ProjectUrl>http://www.michaelsinnott.co.uk</ProjectUrl>
+    </PropertyGroup>
+
+    <!-- NUGET ONLY PROPERTIES -->
+    <PropertyGroup>
+        <NugetPackageName>Media Exporter</NugetPackageName>
+        <PackageId>UmbracoMediaExporter.MediaExporter</PackageId>
+        <Copyright>Michael Sinnott</Copyright>
+        <Owners>Michael Sinnott</Owners>
+        <Summary>Export Media Folders</Summary>
+        <IconUrl></IconUrl>
+        <Tags>umbraco</Tags>
+        <Language>en-GB</Language>
+        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <VersionMajor>1</VersionMajor>
+        <VersionMinor>0</VersionMinor>
+        <VersionPatch>0</VersionPatch>
+        <VersionSuffix></VersionSuffix>
+        <UmbracoVersion>7.9.2</UmbracoVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RootDir>$(MSBuildProjectDirectory)</RootDir>
+        <PackageDir>$(RootDir)\..\Releases</PackageDir>
+        <BuildUmbDir>$(MSBuildProjectDirectory)\_umbraco</BuildUmbDir>
+        <BuildNuGetDir>$(MSBuildProjectDirectory)\_nuget</BuildNuGetDir>
+        <CoreProjectDir>$(RootDir)\..\MediaExporter\</CoreProjectDir>
+        <AppPluginUmbDir>$(BuildUmbDir)\App_Plugins\MediaExporter</AppPluginUmbDir>
+    </PropertyGroup>
+
+    <!-- CLEAN -->
+    <Target Name="Clean">
+        <RemoveDir Directories="$(BuildUmbDir)" Condition="Exists('$(BuildUmbDir)')" />
+        <RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
+        <MakeDir Directories="$(BuildUmbDir)" />
+        <MakeDir Directories="$(BuildNuGetDir)" />
+        <MakeDir Directories="$(PackageDir)" />
+        <MakeDir Directories="$(AppPluginUmbDir)" />
+    </Target>
+
+    <!-- UPDATE ASSEMBLEY VERSION -->
+    <Target Name="UpdateAssemblyInfo" DependsOnTarget="Clean">
+        <Version Major="$(VersionMajor)" Minor="$(VersionMinor)" BuildType="Automatic" RevisionType="Automatic" StartDate="01/04/2018">
+            <Output TaskParameter="Build" PropertyName="Build" />
+            <Output TaskParameter="Revision" PropertyName="Revision" />
+        </Version>
+            
+        <PropertyGroup>
+            <FileVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch).$(Build)</FileVersion>
+            <ProductVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionSuffix)</ProductVersion>
+        </PropertyGroup>
+        
+        <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyVersion(&quot;$(FileVersion)&quot;)]" />
+        <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyFileVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyFileVersion(&quot;$(FileVersion)&quot;)]" />
+        <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyInformationalVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyInformationalVersion(&quot;$(ProductVersion)&quot;)]" />
+    </Target>
+
+    <!-- PREPARE FILES -->
+    <Target Name="PrepareFiles" DependsOnTarget="Compile">
+        <IteamGroup>
+            <PackageFile Include="$(RootDir)\Package.xml" />
+            <BinFiles Include="$(CoreProjectDir)\bin\**\MediaExporter.dll" />
+            <ScriptFiles Include="$(CoreProjectDir)\App_Plugins\MediaExporter\backOffice\controllers\*.*" />
+            <ScriptFiles Include="$(CoreProjectDir)\App_Plugins\MediaExporter\backOffice\resources\*.*" />
+            <ScriptFiles Include="$(CoreProjectDir)\App_Plugins\MediaExporter\backOffice\node_modules\angular-file-saver\dist\angular-file-saver.bundle.js" />
+            <ViewFiles Include="$(CoreProjectDir)\App_Plugins\MediaExporter\backOffice\Dialogs\*.*" />
+            <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
+	        <NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
+        </IteamGroup>
+    </Target>
+
+</ProjectUrl>

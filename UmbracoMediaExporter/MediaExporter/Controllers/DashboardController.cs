@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Ionic.Zip;
+using MediaExporter.Models;
 using Newtonsoft.Json;
 using Umbraco.Web;
 using Umbraco.Web.Mvc;
@@ -53,13 +53,5 @@ namespace MediaExporter.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.OK) {Content = pushStreamContent};
         }
-
-    }
-
-
-    public class UmbFile
-    {
-        public string src { get; set; }
-        public List<object> crops { get; set; }
     }
 }

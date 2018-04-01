@@ -1,0 +1,21 @@
+{
+  "name": "MediaExporter",
+  "readme": "",
+  "url": "",
+  "license": {
+    "name": "MIT",
+    "url": ""
+  },
+  "author": {
+    "name": "Michael Sinnott",
+    "url": "http://www.michaelsinnott.co.uk"
+  },
+  "devDependencies": {
+    "grunt": "~1.0.2",
+    "grunt-contrib-copy": "~1.0.0",
+    "grunt-nuget": "~0.3.0",
+    "grunt-zip": "~0.17.1",
+    "grunt-umbraco-package": "1.0.0",
+    "grunt-contrib-clean": "^1.1.0"
+  }
+}

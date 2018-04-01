@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Michael Sinnott</authors>
+    <owners>Michael Sinnott</owners>
+    <licenseUrl></licenseUrl>
+    <projectUrl>http://www.michaelsinnott.co.uk</projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <tags>umbraco</tags>
+  </metadata>
+</package>
