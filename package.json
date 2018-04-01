@@ -1,7 +1,7 @@
 {
   "name": "MediaExporter",
-  "readme": "",
-  "url": "",
+  "readme": "Media Exporter allows you to export media folders from Umbraco",
+  "url": "http://www.michaelsinnott.co.uk",
   "license": "MIT",
   "author": {
     "name": "Michael Sinnott",
