@@ -7,6 +7,7 @@ using System.Web.Http;
 using Ionic.Zip;
 using MediaExporter.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Umbraco.Web;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
@@ -28,11 +29,20 @@ namespace MediaExporter.Controllers
             {
                 var media = mediaService.GetById(mediaItem.Id);
                 var umbracoFileProp = media.Properties.First(p => p.Alias == "umbracoFile");
-                var file = JsonConvert.DeserializeObject<UmbFile>(umbracoFileProp.Value.ToString());
-                if (file != null)
+                var fileValue = umbracoFileProp.Value.ToString();
+
+                if (fileValue.StartsWith("{") && fileValue.EndsWith("}"))
                 {
-                    var filePath = HttpContext.Current.Server.MapPath(file.src);
-                    mediaFilesToZip.Add(filePath);
+                    var file = JsonConvert.DeserializeObject<UmbFile>(umbracoFileProp.Value.ToString());
+                    if (file != null)
+                    {
+                        var filePath = HttpContext.Current.Server.MapPath(file.src);
+                        mediaFilesToZip.Add(filePath);
+                    }
+                }
+                else
+                {
+                    mediaFilesToZip.Add(fileValue);
                 }
             }
 

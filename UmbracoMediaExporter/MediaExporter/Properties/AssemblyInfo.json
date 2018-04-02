@@ -4,7 +4,7 @@
     "company": "Michael Sinnott",
     "product": "MediaExporter",
     "copyright": "Copyright ©  2018",
-    "version": "1.0.0.0",
-    "informationalVersion": "1.0.0.0",
-    "fileVersion": "1.0.0.0"
+    "version": "1.0.0",
+    "informationalVersion": "1.0.0-beta",
+    "fileVersion": "1.0.0"
 }
