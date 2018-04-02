@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -42,7 +43,8 @@ namespace MediaExporter.Controllers
                 }
                 else
                 {
-                    mediaFilesToZip.Add(fileValue);
+                    var filePath = HttpContext.Current.Server.MapPath(fileValue);
+                    mediaFilesToZip.Add(filePath);
                 }
             }
 
