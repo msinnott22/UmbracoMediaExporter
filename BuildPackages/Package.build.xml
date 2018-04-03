@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
 
+    <PropertyGroup>
+        <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+        <MSBuildUmbracoTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildUmbracoTasks</MSBuildUmbracoTasksPath>
+        <MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\Tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
+    </PropertyGroup>
+
+    <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+    <Import Project="$(MSBuildUmbracoTasksPath)\MSBuild.Umbraco.Tasks.Targets" />
+    <Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
+
     <!-- PROPERTIES -->
     <!-- SHARED PROPERTIES -->
     <PropertyGroup>
@@ -21,7 +31,6 @@
         <Copyright>Michael Sinnott</Copyright>
         <Owners>Michael Sinnott</Owners>
         <Summary>Export Media Folders</Summary>
-        <IconUrl></IconUrl>
         <Tags>umbraco</Tags>
         <Language>en-GB</Language>
         <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
@@ -31,7 +40,7 @@
         <VersionMajor>1</VersionMajor>
         <VersionMinor>0</VersionMinor>
         <VersionPatch>0</VersionPatch>
-        <VersionSuffix></VersionSuffix>
+        <VersionSuffix>-beta</VersionSuffix>
         <UmbracoVersion>7.9.2</UmbracoVersion>
     </PropertyGroup>
 
@@ -71,6 +80,11 @@
         <FileUpdate Encoding="ASCII" Files="$(CoreProjectDir)\Properties\AssemblyInfo.cs" Regex="AssemblyInformationalVersion\(&quot;.*&quot;\)\]" ReplacementText="AssemblyInformationalVersion(&quot;$(ProductVersion)&quot;)]" />
     </Target>
 
+    <!-- COMPILE -->
+    <Target Name="Compile" DependsOnTarget="UpdateAssemblyInfo">
+        <MSBuild Projects="$(CoreProjectDir)\MediaExporter.csproj" />
+    </Target>
+
     <!-- PREPARE FILES -->
     <Target Name="PrepareFiles" DependsOnTarget="Compile">
         <IteamGroup>
@@ -82,7 +96,84 @@
             <ViewFiles Include="$(CoreProjectDir)\App_Plugins\MediaExporter\backOffice\Dialogs\*.*" />
             <NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
 	        <NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
+            <NugetXdtTransformFile Include="$(MSBuildProjectDirectory)\web.config.install.xdt" />
         </IteamGroup>
+
+        <Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+        <Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildUmbDir)" >
+        <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(AppPluginUmbDir)" />
+        <Copy SourceFiles="@(ScriptFiles)" DestinationFolder="$(AppPluginUmbDir)\js\" />
+        <!-- <Copy SourceFiles="@(StyleFiles)" DestinationFolder="$(AppPluginUmbDir)\css\" /> -->
+        <Copy SourceFiles="@(ViewFiles)" DestinationFolder="$(AppPluginUmbDir)\backOffice\Dialogs\" />
+        <Copy SourceFiles="@(BinFiles)" DestinationFolder="@(BinFiles->'$(BuildUmbDir)\bin\%(RecursiveDir)%(Filename)%(Extension)'" />
+        <Copy SourceFiles="@(NugetXdtTransformFile)" DestinationFolder="$(BuildNuGetDir)\Content\" />
+        <Copy SourceFiles="@(NugetReadmeFile)" DestinationFolder="$(BuildNuGetDir)\" />
+        <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\MediaExporter\" />
+        <Copy SourceFiles="@(ScriptsFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\MediaExporter\js\" />
+        <Copy SourceFiles="@(ViewFiles)" DestinationFolder="$(BuildNuGetDir)\Content\App_Plugins\MediaExporter\backOffice\Dialogs\" />
+        <Copy SourceFiles="@(BinFiles)" DestinationFolder="@(BinFiles->'$(BuildNuGetDir)\lib\%(RecursiveDir)%(Filename)%(Extension)')" />
+        <!-- <Copy SourceFiles="@()" DestinationFolder="" />
+        <Copy SourceFiles="@()" DestinationFolder="" /> -->
+
     </Target>
+
+    <!-- UMBRACO MANIFEST -->
+    <Target Name="UmbracoManifest" DependsOnTarget="PrepareFiles">
+        <ItemGroup>
+            <ManifestFiles Include="$(BuildUmbDir)\**\*" Exclude="$(BuildUmbDir)\package.xml" />
+        </ItemGroup>
+        <ManifestUpdate ManifestFile="$(BuildUmbDir)\package.xml"
+            WorkingDirectory="$(BuildUmbDir)"
+            MinimumRequiredUmbracoVersion="$(UmbracoVersion)"
+            PackageVersion="$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionSuffix)"
+            Files="@(ManifestFiles)"  />
+    </Target>
+    <!-- NUGET PACKAGE MANIFEST -->
+    <Target Name="NuGetManifest" DependsOnTarget="PrepareFiles">
+       <ItemGroup> 
+        <ManifestFiles Include="$(BuildNuGetDir)\**\*" Exclude="$(BuildNuGetDir)\package.nuspec" />
+       </ItemGroup>
+       <MSBuild.NuGet.Tasks.ManifestUpdate 
+            ManifestFile="$(BuildNuGetDir)\package.nuspec"
+            WorkingDirectory="$(BuildNuGetDir)"
+            Title="$(NugetPackageName)"
+            Description="$(Readme)"
+            Summary="$(Summary)"
+            Version=""
+            MinimumRequiredUmbracoVersion="$(MinUmbracoVersion)"
+            Authors=""
+            Owners=""
+            Copyright=""
+            LicenseUrl="$(PackageLicenseUrl)"
+			ProjectUrl="$(ProjectUrl)"
+			Id="$(PackageId)"
+			IconUrl="$(IconUrl)"
+			Language="$(Language)"
+			RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
+			Tags="$(Tags)"
+			Files="@(ManifestFiles)" />
+    </Target>
+    <!-- PACKAGE -->
+	<Target Name="Package" DependsOnTargets="Manifest; ManifestNuGet">
+		<ItemGroup>
+			<PackageFiles Include="$(BuildUmbDir)\**\*.*" />
+		</ItemGroup>
+		
+		<Package ManifestFile="$(BuildUmbDir)\Package.xml"
+			WorkingDirectory="$(BuildUmbDir)"
+			OutputDirectory="$(PackageDir)"
+			Files="@(PackageFiles)" />
+			
+		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\Tools\NuGet.exe"
+          ManifestFile="$(BuildNuGetDir)\package.nuspec"
+          BasePath="$(BuildNuGetDir)"
+          Version="$(ProductVersion)"
+          OutputDirectory="$(PackageDir)"
+          Symbols="true" />
+		  
+        <RemoveDir Directories="$(BuildUmbDir)" Condition="Exists('$(BuildUmbDir)')" />
+		<RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
+	</Target>
+
 
 </ProjectUrl>

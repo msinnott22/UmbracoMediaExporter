@@ -240,7 +240,10 @@
     <Content Include="App_Plugins\MediaExporter\backOffice\node_modules\angular-file-saver\dist\angular-file-saver.bundle.js" />
     <Content Include="App_Plugins\MediaExporter\backOffice\resources\mediaexporter.resource.js" />
     <Content Include="App_Plugins\MediaExporter\package.manifest" />
-    <Content Include="MediaExporter.nuspec" />
+    <Content Include="MediaExporter.nuspec">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Plugins\MediaExporter\web.config.install.xdt" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

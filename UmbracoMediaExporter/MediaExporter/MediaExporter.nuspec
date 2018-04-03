@@ -11,4 +11,7 @@
     <description>$description$</description>
     <tags>umbraco</tags>
   </metadata>
+  <files>
+    <file src="App_Plugins/MediaExporter/**" target="content/App_Plugins/MediaExporter" exclude="*.config" />
+  </files>
 </package>
