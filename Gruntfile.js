@@ -9,7 +9,7 @@
         pkg: pkg,
         clean:  ["Releases/temp"],
         copy: {
-            release: {
+            binary: {
                 files: [
                     {
                         expand: true,
@@ -19,6 +19,26 @@
                             pkg.name + ".xml"
                         ],
                         dest: "Releases/temp/bin/"
+                    }
+                ]
+            },
+            resources: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: projectRoot + "App_Plugins/" + pkg.name + "/",
+                        src: ["**/*.*"],
+                        dest: "Releases/temp/App_Plugins/" + pkg.name + "/"
+                    }
+                ]
+            },
+            nuget: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "Release/nuget/",
+                        src: [pkg.name + "." + version + ".nupkg"],
+                        dest: "C:/nugetfeed/"
                     }
                 ]
             }
@@ -33,7 +53,7 @@
             }
         },
         umbracoPackage: {
-            release: {
+            dist: {
                 src: "Releases/temp/",
                 dest: "releases/umbraco",
                 options: {
@@ -63,6 +83,6 @@
     grunt.loadNpmTasks('grunt-zip');
     grunt.loadNpmTasks('grunt-umbraco-package');
 
-    grunt.registerTask('release', ['clean', 'copy', 'zip', 'umbracoPackage', 'nugetpack', 'clean']);
+    grunt.registerTask('release', ['clean', 'copy:binary', 'copy:resources', 'zip', 'umbracoPackage', 'nugetpack', 'clean', 'copy:nuget']);
     grunt.registerTask('default', ['release']);
 };

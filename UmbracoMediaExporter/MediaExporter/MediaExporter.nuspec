@@ -1,17 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <package>
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
+    <id>MediaExporter</id>
+    <version>1.0.0-beta</version>
+    <title>Media Exporter</title>
     <authors>Michael Sinnott</authors>
     <owners>Michael Sinnott</owners>
     <projectUrl>http://www.michaelsinnott.co.uk</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>Media Exporter allows you to export media folders from Umbraco</description>
     <tags>umbraco</tags>
   </metadata>
-  <files>
-    <file src="App_Plugins/MediaExporter/**" target="content/App_Plugins/MediaExporter" exclude="*.config" />
-  </files>
 </package>
