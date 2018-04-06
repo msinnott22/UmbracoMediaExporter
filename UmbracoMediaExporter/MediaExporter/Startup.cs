@@ -16,7 +16,7 @@ namespace MediaExporter
         {
             if (sender.TreeAlias == "media" 
                 && sender.Security.CurrentUser.UserType.Alias == "admin"
-                && e.NodeId != "-1" && e.NodeId != "-20")
+                && e.NodeId != "-1" && e.NodeId != "-21")
             {
                 var menuItem = new MenuItem()
                 {

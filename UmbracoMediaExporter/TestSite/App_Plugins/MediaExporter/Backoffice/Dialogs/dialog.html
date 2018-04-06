@@ -5,6 +5,10 @@
             <p class="abstract">
                 Export <strong>{{currentNode.name}}</strong>
             </p>
+            
+            <button class="btn btn-primary" ng-click="exportMedia()" ng-disable="busy">
+                <localize key="general_ok">Export</localize>
+            </button>
 
             <div class="umb-loader-wrapper" ng-show="busy">
                 <div class="umb-loader"></div>
@@ -17,7 +21,7 @@
 
             <div class="alert alert-success" ng-show="success">
                 <p>
-                    <strong>{{target.name}}</strong> has been exported
+                    <strong>{{currentNode.name}}</strong> has been exported
                 </p>
 
                 <button class="btn btn-primary" ng-click="nav.hideDialog()">Ok</button>
@@ -29,8 +33,5 @@
         <a class="btn btn-link" ng-click="nav.hideDialog()" ng-if="!busy">
             <localize key="general_cancel">Cancel</localize>
         </a>
-        <button class="btn btn-primary" ng-click="exportMedia()" ng-disable="busy">
-            <localize key="general_ok">OK</localize>
-        </button>
     </div>
 </div>
