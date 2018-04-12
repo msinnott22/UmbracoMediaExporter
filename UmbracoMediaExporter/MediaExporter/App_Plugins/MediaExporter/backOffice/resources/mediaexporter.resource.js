@@ -6,6 +6,9 @@
 
         exportMedia: function(nodeId) {
             return $http.post(apiRoot + "ExportMedia/?nodeId=" + nodeId, null, { responseType: 'arraybuffer' });
+        },
+        exportAllMedia: function() {
+            return $http.post(apiRoot + "ExportAllMedia", null, { responseType: 'arraybuffer' });
         }
     };
 }

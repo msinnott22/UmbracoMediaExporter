@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 using Ionic.Zip;
 using MediaExporter.Models;
@@ -53,6 +54,23 @@ namespace MediaExporter.Controllers
                 zip.AddFiles(mediaFilesToZip, false, "");
                 return ZipContentResult(zip);
             }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage ExportAllMedia()
+        {
+            string pathToFiles = HttpContext.Current.Server.MapPath("/Media");
+
+            if (!string.IsNullOrEmpty(pathToFiles))
+            {
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.AddDirectory("Media", pathToFiles);
+                    return ZipContentResult(zip);
+                }
+            }
+            
+            return new HttpResponseMessage();
         }
 
         private HttpResponseMessage ZipContentResult(ZipFile zipFile)

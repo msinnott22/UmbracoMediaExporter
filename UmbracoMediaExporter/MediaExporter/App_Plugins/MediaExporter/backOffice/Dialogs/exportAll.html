@@ -6,9 +6,9 @@
                 Export All Media Items
             </p>
 
-            <!--<button class="btn btn-primary" ng-click="exportMedia()" ng-hide="busy || success">
+            <button class="btn btn-primary" ng-click="exportAllMedia()" ng-hide="busy || success">
                 Export
-            </button>-->
+            </button>
 
             <div class="umb-loader-wrapper" ng-show="busy">
                 <div class="umb-loader"></div>
@@ -21,7 +21,7 @@
 
             <div class="alert alert-success" ng-show="success">
                 <p>
-                    <strong>{{currentNode.name}}</strong> has been exported
+                    All Media has been exported
                 </p>
 
                 <button class="btn btn-primary" ng-click="nav.hideDialog()">Ok</button>

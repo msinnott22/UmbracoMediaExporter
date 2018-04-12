@@ -34,6 +34,25 @@ angular.module("umbraco").controller("MediaExporter.Dialog.Controller",
                     });
         };
 
+        $scope.exportAllMedia = function() {
+            $scope.busy = true;
+            $scope.error = false;
+
+            mediaExporterResource.exportAllMedia().then(function(resp) {
+                $scope.error = false;
+                $scope.success = true;
+                $scope.busy = false;
+
+                console.log(resp);
+
+                openSaveAsDialog("AllMedia", resp.data, 'application/zip');
+            }, function(err) {
+                $scope.success = false;
+                $scope.error = err;
+                $scope.busy = false;
+            });
+        };
+
         function openSaveAsDialog(filename, content, mediaType) {
             var blob = new Blob([content], { type: mediaType });
             FileSaver.saveAs(blob, filename);
