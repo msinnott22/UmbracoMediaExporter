@@ -6,8 +6,8 @@
                 Export <strong>{{currentNode.name}}</strong>
             </p>
             
-            <button class="btn btn-primary" ng-click="exportMedia()" ng-disable="busy">
-                <localize key="general_ok">Export</localize>
+            <button class="btn btn-primary" ng-click="exportMedia()" ng-hide="busy || success">
+                Export
             </button>
 
             <div class="umb-loader-wrapper" ng-show="busy">
