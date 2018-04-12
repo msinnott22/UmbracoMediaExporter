@@ -1,0 +1,37 @@
+﻿<div ng-controller="MediaExporter.Dialog.Controller">
+    <script src="/App_Plugins/MediaExporter/backOffice/vendor/FileSaver.js"></script>
+    <div class="umb-dialog-body form-horizontal">
+        <div class="umb-pane">
+            <p class="abstract">
+                Export All Media Items
+            </p>
+
+            <!--<button class="btn btn-primary" ng-click="exportMedia()" ng-hide="busy || success">
+                Export
+            </button>-->
+
+            <div class="umb-loader-wrapper" ng-show="busy">
+                <div class="umb-loader"></div>
+            </div>
+
+            <div class="alert alert-error" ng-show="error">
+                <h4>{{error.errorMsg}}</h4>
+                <p>{{error.data.Message}}</p>
+            </div>
+
+            <div class="alert alert-success" ng-show="success">
+                <p>
+                    <strong>{{currentNode.name}}</strong> has been exported
+                </p>
+
+                <button class="btn btn-primary" ng-click="nav.hideDialog()">Ok</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="umb-dialog-footer btn-toolbar umb-btn-toolbar" ng-hide="success">
+        <a class="btn btn-link" ng-click="nav.hideDialog()" ng-if="!busy">
+            <localize key="general_cancel">Cancel</localize>
+        </a>
+    </div>
+</div>

@@ -29,6 +29,18 @@ namespace MediaExporter
                     "Media Exporter");
                 e.Menu.Items.Insert(e.Menu.Items.Count - 1, menuItem);
             }
+            else if (e.NodeId == "-1")
+            {
+                var menuItem = new MenuItem()
+                {
+                    Alias =  "mediaExporter",
+                    Name = "Export All Media",
+                    Icon = "zip",
+                    SeperatorBefore = true
+                };
+                menuItem.LaunchDialogView("/App_Plugins/MediaExporter/Backoffice/Dialogs/exportAll.html", "Media Exporter");
+                e.Menu.Items.Insert(e.Menu.Items.Count - 1, menuItem);
+            }
         }
     }
 }
