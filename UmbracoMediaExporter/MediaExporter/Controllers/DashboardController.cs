@@ -59,13 +59,13 @@ namespace MediaExporter.Controllers
         [HttpPost]
         public HttpResponseMessage ExportAllMedia()
         {
-            string pathToFiles = HttpContext.Current.Server.MapPath("/Media");
+            string pathToFiles = HttpContext.Current.Server.MapPath("/media");
 
             if (!string.IsNullOrEmpty(pathToFiles))
             {
                 using (ZipFile zip = new ZipFile())
                 {
-                    zip.AddDirectory("Media", pathToFiles);
+                    zip.AddDirectory(pathToFiles);
                     return ZipContentResult(zip);
                 }
             }
